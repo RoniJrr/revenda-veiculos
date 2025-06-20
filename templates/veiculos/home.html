@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Revenda de Veículos</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
+        .veiculo { background: white; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+        img { max-width: 300px; height: auto; display: block; margin-bottom: 10px; }
+        h2 { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    {% load humanize %}
+    <h1>Veículos disponíveis</h1>
+    
+    {% for veiculo in veiculos %}
+        <div class="veiculo">
+            {% if veiculo.foto %}
+                <img src="{{ veiculo.foto.url }}" alt="Foto do veículo">
+            {% endif %}
+            <h2>{{ veiculo.marca }} {{ veiculo.modelo }} ({{ veiculo.ano }})</h2>
+            <p><strong>Cor:</strong> {{ veiculo.cor }}</p>
+            <p><strong>Preço:</strong> R$ {{ veiculo.preco|floatformat:2 }}</p>
+            <p><strong>Km:</strong> {{ veiculo.quilometragem|intcomma }} km</p>
+            <p>{{ veiculo.descricao }}</p>
+        </div>
+    {% empty %}
+        <p>Nenhum veículo cadastrado no momento.</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: sistema-revenda
+    runtime: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn revenda.wsgi"
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+    staticPublishPath: staticfiles
