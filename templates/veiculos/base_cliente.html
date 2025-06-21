@@ -1,5 +1,5 @@
+{% load tz static %}
 <!DOCTYPE html>
-{% load tz %}
 {% now "Y" as now %}
 <html lang="pt-br">
 <head>
@@ -15,7 +15,9 @@
     <!-- Cabeçalho do cliente -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">RevendaCar</a>
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'img/logo-revendacar.png' %}" alt="RevendaCar" height="40">
+            </a>
         </div>
     </nav>
 

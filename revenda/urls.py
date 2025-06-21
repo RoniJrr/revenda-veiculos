@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('veiculos.urls')),   # todas as rotas do app veiculos, incluindo a home
+    path('veiculos/', include('veiculos.urls')),   # todas as rotas do app veiculos, incluindo a home
 ]
 
 # Para servir arquivos de mídia (fotos)
