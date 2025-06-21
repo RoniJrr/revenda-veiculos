@@ -1,32 +1,63 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Revenda de Veículos</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; }
-        .veiculo { background: white; padding: 15px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-        img { max-width: 300px; height: auto; display: block; margin-bottom: 10px; }
-        h2 { margin-bottom: 5px; }
-    </style>
-</head>
-<body>
-    {% load humanize %}
-    <h1>Veículos disponíveis</h1>
-    
+{% extends 'veiculos/base_cliente.html' %}
+{% load humanize static tz %}
+{% now "Y" as now %}
+
+{% block title %}Veículos à Venda{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Veículos Disponíveis</h2>
+<form method="get" class="row g-3 mb-4">
+    <div class="col-md-3">
+        <input type="text" name="marca" class="form-control" placeholder="Marca"
+               value="{{ filtros.marca }}">
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="modelo" class="form-control" placeholder="Modelo"
+               value="{{ filtros.modelo }}">
+    </div>
+    <div class="col-md-2">
+        <input type="number" name="ano" class="form-control" placeholder="Ano"
+               value="{{ filtros.ano }}">
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+    <div class="col-md-2">
+        <a href="{% url 'home' %}" class="btn btn-secondary w-100">Limpar</a>
+    </div>
+</form>
+<div class="row">
     {% for veiculo in veiculos %}
-        <div class="veiculo">
-            {% if veiculo.foto %}
-                <img src="{{ veiculo.foto.url }}" alt="Foto do veículo">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100 position-relative">
+            {% if veiculo.destaque %}
+                <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-2">Destaque</span>
             {% endif %}
-            <h2>{{ veiculo.marca }} {{ veiculo.modelo }} ({{ veiculo.ano }})</h2>
-            <p><strong>Cor:</strong> {{ veiculo.cor }}</p>
-            <p><strong>Preço:</strong> R$ {{ veiculo.preco|floatformat:2 }}</p>
-            <p><strong>Km:</strong> {{ veiculo.quilometragem|intcomma }} km</p>
-            <p>{{ veiculo.descricao }}</p>
+            {% if veiculo.foto %}
+                <img src="{{ veiculo.foto.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ veiculo.marca }} {{ veiculo.modelo }}</h5>
+
+                {% if veiculo.preco < veiculo.fipe %}
+                    <span class="badge bg-success position-absolute" style="top: 10px; right: 10px; z-index:10;">
+                        Abaixo da FIPE
+                    </span>
+                {% endif %}
+
+                <p class="card-text">
+                    Ano: {{ veiculo.ano }}<br>
+                    KM: {{ veiculo.quilometragem|floatformat:0 }}<br>
+                    Preço: R$ {{ veiculo.preco|floatformat:2|intcomma }}
+                    Tabela FIPE: R$ {{ veiculo.fipe|floatformat:2|intcomma }}
+                </p>
+                <a href="{% url 'detalhes_veiculo' veiculo.id %}" class="btn btn-primary">Ver Detalhes</a>
+            </div>
         </div>
+    </div>
     {% empty %}
-        <p>Nenhum veículo cadastrado no momento.</p>
+        <p class="text-muted">Nenhum veículo encontrado com os critérios informados.</p>
     {% endfor %}
-</body>
-</html>
+</div>
+{% endblock %}
