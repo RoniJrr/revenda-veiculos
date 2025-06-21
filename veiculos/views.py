@@ -31,7 +31,7 @@ def home(request):
             'ano': ano or '',
         }
     }
-    return render(request, 'veiculos/home.html', context)
+    return render(request, 'veiculos/home.html', {'veiculos': veiculos})
 
 
 def listar_veiculos(request):
